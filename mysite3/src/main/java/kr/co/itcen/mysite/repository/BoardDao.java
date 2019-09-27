@@ -71,6 +71,13 @@ public class BoardDao {
 		return count ==1;
 		
 	}
+
+	public boolean reply(BoardVo vo) {
+		sqlSession.update("board.replyupdate", vo);
+		int count = sqlSession.insert("board.reply", vo);
+		return count ==1;
+		
+	}
 		
 
 

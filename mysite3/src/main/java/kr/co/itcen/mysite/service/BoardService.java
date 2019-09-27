@@ -39,4 +39,9 @@ public class BoardService {
 		
 	}
 
+	public void reply(BoardVo vo) {
+		boardDao.reply(vo);
+		
+	}
+
 }

@@ -13,6 +13,12 @@ public class BoardVo {
 	private Long user_no;
 	private String user_name;
 	private Boolean view;
+	@Override
+	public String toString() {
+		return "BoardVo [no=" + no + ", title=" + title + ", contents=" + contents + ", hit=" + hit + ", reg_date="
+				+ reg_date + ", g_no=" + g_no + ", o_no=" + o_no + ", depth=" + depth + ", user_no=" + user_no
+				+ ", user_name=" + user_name + ", view=" + view + "]";
+	}
 	public Long getNo() {
 		return no;
 	}
@@ -78,14 +84,7 @@ public class BoardVo {
 	}
 	public void setView(Boolean view) {
 		this.view = view;
-	}
-	@Override
-	public String toString() {
-		return "BoardVo [no=" + no + ", title=" + title + ", contents=" + contents + ", hit=" + hit + ", reg_date="
-				+ reg_date + ", g_no=" + g_no + ", o_no=" + o_no + ", depth=" + depth + ", user_no=" + user_no
-				+ ", user_name=" + user_name + ", view=" + view + "]";
-	}
-	
+	}	
 	
 	
 }

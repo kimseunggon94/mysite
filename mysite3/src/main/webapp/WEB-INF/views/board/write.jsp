@@ -17,20 +17,19 @@
 		
 		<div id="content">
 			<div id="board">
-				<form class="board-form" method="post" action="${pageContext.servletContext.contextPath }/board">
-					<input type = "hidden" name = "a" value="write">
-					<c:if test ='${param.no != null }'>
+				<form class="board-form" method="post" action="${pageContext.servletContext.contextPath }/board/write">	
+					<input type = "hidden" name = "no" value="${param.no }">
+					<input type = "hidden" name = "page" value="${param.page }">
+					<input type = "hidden" name = "kwd" value="${param.kwd }">
+					<c:if test ='${param.no != null }'>		
 						<input type = "hidden" name = "g_no" value="${vo.g_no }">
-						<input type = "hidden" name = "o_no" value="${vo.o_no }">
-						<input type = "hidden" name = "depth" value="${vo.depth }">			
-						<input type = "hidden" name = "no" value="${param.no }">
-						<input type = "hidden" name = "page" value="${param.page }">
-						<input type = "hidden" name = "kwd" value="${param.kwd }">
+						<input type = "hidden" name = "o_no" value="${vo.o_no+1 }">
+						<input type = "hidden" name = "depth" value="${vo.depth+1 }">	
 					</c:if>
 					
 					<table class="tbl-ex">
 						<tr>
-							<th colspan="2">글쓰기</th>
+							<th colspan="2">글쓰기 </th>
 						</tr>
 						<tr>
 							<td class="label">제목</td>
@@ -45,10 +44,10 @@
 					</table>
 					<div class="bottom">
 						<c:if test ='${param.no != null }'>
-							<a href="${pageContext.servletContext.contextPath }/board?page=${param.page}&a=view&no=${param.no}&kwd=${param.kwd}">취소</a>
+							<a href="${pageContext.servletContext.contextPath }/board/view?page=${param.page}&no=${param.no}&kwd=${param.kwd}">취소</a>
 						</c:if>
 						<c:if test='${param.no==null }'>
-							<a href="${pageContext.servletContext.contextPath }/board?page=${param.page }&kwd=${param.kwd}">취소</a>
+							<a href="${pageContext.servletContext.contextPath }/board/list?page=${param.page }&kwd=${param.kwd}">취소</a>
 						</c:if>
 						
 						
