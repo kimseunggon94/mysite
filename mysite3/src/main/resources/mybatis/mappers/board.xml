@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="board">
+	<select id= "getList" parameterType="map" resultType="boardvo">
+		<![CDATA[
+		select 	board.title, 
+				user.no as user_no, 
+				user.name as user_name, 
+				board.hit, 
+				date_format(board.reg_date, '%Y-%m-%d %h:%i:%s') as reg_date, 
+				board.depth, 
+				board.contents, 
+				board.no as no, 
+				board.view  
+		   from board, user 
+		  where board.user_no=user.no 
+       order by g_no desc, o_no asc 
+		  Limit #{page }, 5
+		]]>
+	</select>
+	
+	<select id= "getListkwd" parameterType="map" resultType="boardvo">
+		<![CDATA[
+		select 	board.title, 
+				user.no as user_no, 
+				user.name as user_name, 
+				board.hit, 
+				date_format(board.reg_date, '%Y-%m-%d %h:%i:%s') as reg_date, 
+				board.depth, 
+				board.contents, 
+				board.no as no, 
+				board.view  
+		   from board, user 
+		  where board.user_no=user.no 
+		    and (title Like #{kwd } or contents Like #{kwd}) 
+		    and view = true
+	   order by g_no desc, o_no asc 
+		  Limit #{page }, 5
+		]]>
+	</select>
+	
+	<select id = "getCount" resultType = "int">
+		<![CDATA[
+			select count(*) from board
+		]]>
+	</select>
+	
+	<select id = "getCountkwd" parameterType="String" resultType = "int">
+		<![CDATA[
+			select count(*) from board where (title Like #{kwd } or contents Like #{kwd }) and view =true
+		]]>
+	</select>
+	
+	<select id="get" parameterType="long" resultType="boardvo">
+		<![CDATA[
+		select  title, 
+				contents, 
+				hit, 
+				date_format(reg_date, '%Y-%m-%d %h:%i:%s') as reg_date, 
+				user_no,  
+				g_no, 
+				o_no, 
+				depth 
+		   from board 
+		  where no = #{no }
+		  ]]>
+	</select>
+	
+	<update id="update" parameterType="boardvo">
+		<![CDATA[
+		update board set title = #{title }, contents =#{contents} where no = #{no }
+		]]>
+	</update>
+	
+	<update id="delete" parameterType="boardvo">
+		<![CDATA[
+		update board set view=false where no = #{no }
+		]]>
+	</update>
+	
+	<insert id="insert" parameterType="boardvo">
+		<![CDATA[
+		insert 
+		into board 
+		values(null, #{title }, #{contents }, 0, now(),(select ifnull(max(b.g_no)+1,1) from board as b), 1, 0, true, #{user_no})
+		]]>
+	</insert>
+	
+	
+</mapper>
+
