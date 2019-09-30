@@ -44,4 +44,9 @@ public class BoardService {
 		
 	}
 
+	public void hit(Long no) {
+		boardDao.hit(no);
+		
+	}
+
 }

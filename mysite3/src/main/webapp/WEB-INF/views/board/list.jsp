@@ -47,7 +47,7 @@
 							
 							<c:choose>
 								<c:when test="${vo.view ==true}">
-									<a href=" ${pageContext.servletContext.contextPath }/board/view?page=${param.page }&no=${vo.no}&kwd=${param.kwd}">
+									<a href=" ${pageContext.servletContext.contextPath }/board/view?page=${page }&no=${vo.no}&kwd=${kwd}">
 									${vo.title } 
 									</a>	
 								</c:when>
@@ -77,15 +77,15 @@
 				<div class="pager">
 					<ul>
 						<li><c:choose> 
-						<c:when test="${page_count!=0 }"><a href="${pageContext.servletContext.contextPath }/board/list?page=${(page_count*5)}&kwd=${param.kwd }"> ◀ </a></c:when>
+						<c:when test="${page_count!=0 }"><a href="${pageContext.servletContext.contextPath }/board/list?page=${(page_count*5)}&kwd=${kwd }"> ◀ </a></c:when>
 						<c:otherwise>◀</c:otherwise>
 						</c:choose></li>
 
 						<c:forEach begin='1' end='5' step='1' var='i'>
 							
-						<li <c:if test="${param.page==(page_count*5)+i }"> class="selected" </c:if>> 	
+						<li <c:if test="${page==(page_count*5)+i }"> class="selected" </c:if>> 	
 						<c:choose>
-						<c:when test = "${(page_count*5)+i <= (count-1)/5+1}"><a href="${pageContext.servletContext.contextPath }/board/list?page=${page_count*5+i }&kwd=${param.kwd}"> ${page_count*5+i } </a></c:when>
+						<c:when test = "${(page_count*5)+i <= (count-1)/5+1}"><a href="${pageContext.servletContext.contextPath }/board/list?page=${page_count*5+i }&kwd=${kwd}"> ${page_count*5+i } </a></c:when>
 						<c:otherwise>${page_count*5+i }</c:otherwise>
 						</c:choose>
 						</li>
@@ -94,7 +94,7 @@
 						
 						<li>
 						<c:choose>
-						<c:when test = "${(page_count*5)+6 <= (count-1)/5+1}"><a href="${pageContext.servletContext.contextPath }/board/list?page=${(page_count*5)+6}&kwd=${param.kwd}"> ▶</a></c:when>
+						<c:when test = "${(page_count*5)+6 <= (count-1)/5+1}"><a href="${pageContext.servletContext.contextPath }/board/list?page=${(page_count*5)+6}&kwd=${kwd}"> ▶</a></c:when>
 						<c:otherwise>▶</c:otherwise>
 						</c:choose>
 						</li>
@@ -105,7 +105,7 @@
 				
 				<c:if test='${!empty authUser }'>
 					<div class="bottom">
-						<a href="${pageContext.servletContext.contextPath }/board/write?page=${param.page}&kwd=${param.kwd}" id="new-book">글쓰기</a>
+						<a href="${pageContext.servletContext.contextPath }/board/write?page=${page}&kwd=${kwd}" id="new-book">글쓰기</a>
 					</div>
 				</c:if>
 			</div>

@@ -24,29 +24,33 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
-	@RequestMapping("")
-	public String index(Model model ) {
-		int page =1;
-		String kwd = "";
-		List<BoardVo> list = boardService.getlist(page, kwd);
-		int count = boardService.getCount(kwd);
-		model.addAttribute("list", list);
-		model.addAttribute("page_count", (page-1)/5);
-		model.addAttribute("count", count);
-		model.addAttribute("page", page	);
-		model.addAttribute("kwd", kwd);
-		
-		return "redirect:/board/list";
-	}
+//	@RequestMapping("")
+//	public String index(Model model ) {
+//		int page =1;
+//		String kwd = "";
+//		List<BoardVo> list = boardService.getlist(page, kwd);
+//		int count = boardService.getCount(kwd);
+//		model.addAttribute("list", list);
+//		model.addAttribute("page_count", (page-1)/5);
+//		model.addAttribute("count", count);
+//		model.addAttribute("page", page	);
+//		model.addAttribute("kwd", kwd);
+//		
+//		return "redirect:/board/list";
+//	}
 	
-	@RequestMapping("/list")
-	public String list(Model model, @RequestParam("page") int page, @RequestParam("kwd") String kwd) {
+	@RequestMapping({"", "/list"})
+	public String list(Model model, @RequestParam(value="page", defaultValue = "1", required = false) int page ,
+			@RequestParam(value="kwd",defaultValue = "", required = false) String kwd) {
 		
 		List<BoardVo> list =   boardService.getlist(page, kwd);
 		int count = boardService.getCount(kwd);
 		model.addAttribute("list", list);
 		model.addAttribute("page_count", (page-1)/5);
 		model.addAttribute("count", count);
+		model.addAttribute("page",page);
+		model.addAttribute("kwd",kwd);
+		
 		return "board/list";
 	}
 	
@@ -55,11 +59,24 @@ public class BoardController {
 		
 		BoardVo vo = boardService.get(no);
 		model.addAttribute("vo", vo);
+		boardService.hit(no);
 		return "board/view";
 	}
 	
 	@RequestMapping(value ="/modify/{no}", method=RequestMethod.GET)
-	public String modify(@PathVariable("no") Long no, Model model ) {
+	public String modify(@PathVariable("no") Long no, Model model, HttpSession session ) {
+		if(session ==null) {
+			return "redirect:/board";
+		}
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser ==null) {
+			return "redirect:/board";
+		}
+		
+		if(authUser.getNo()!=boardService.get(no).getUser_no()) {
+			return "redirect:/board";
+		}
+		
 		BoardVo vo = boardService.get(no);
 		model.addAttribute("vo", vo);
 		return "board/modify";
@@ -72,13 +89,33 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/delete", method=RequestMethod.GET)
-	public String delete(@ModelAttribute BoardVo  vo, @RequestParam("page") int page, @RequestParam("kwd") String kwd) {
+	public String delete(@ModelAttribute BoardVo  vo, @RequestParam("page") int page, @RequestParam("kwd") String kwd, HttpSession session) {
+		if(session ==null) {
+			return "redirect:/board";
+		}
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser ==null) {
+			return "redirect:/board";
+		}
+		
+		if(authUser.getNo()!=boardService.get(vo.getNo()).getUser_no()) {
+			return "redirect:/board";
+		}
 		boardService.delete(vo);
 		return "redirect:/board/list?page="+page+"&kwd="+kwd;
 	}
 	
 	@RequestMapping(value ="/write", method=RequestMethod.GET)
-	public String write(@RequestParam(value="no", required=false) Long no, Model model) {
+	public String write(@RequestParam(value="no", required=false) Long no, Model model, HttpSession session) {
+		if(session ==null) {
+			return "redirect:/board";
+		}
+		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		if(authUser ==null) {
+			return "redirect:/board";
+		}
+		
+		
 		if(no!=null) {
 			BoardVo vo = boardService.get(no);
 			model.addAttribute("vo",vo);

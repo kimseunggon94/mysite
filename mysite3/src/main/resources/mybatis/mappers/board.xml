@@ -85,9 +85,6 @@
 		]]>
 	</update>
 	
-	
-	
-	
 	<insert id="insert" parameterType="boardvo">
 		<![CDATA[
 		insert 
@@ -104,5 +101,13 @@
 		values(null, #{title}, #{contents}, 0, now(), #{g_no}, #{o_no}, #{depth}, true, #{user_no})
 		]]>
 	</insert>
+	
+	<update id="hit" parameterType="long">
+		<![CDATA[
+		update board set hit=hit+1 where no = #{no }
+		]]>
+	
+	</update>
+	
 </mapper>
 

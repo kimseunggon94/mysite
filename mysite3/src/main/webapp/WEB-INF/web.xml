@@ -59,15 +59,15 @@
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
 
+
 	<!-- 공통 에러 페이지 -->
-	
 	<error-page>
-		<error-cod>404</error-cod>
+		<error-code>404</error-code>
 		<location>/WEB-INF/views/error/404.jsp</location>
 	</error-page>
-
 	<error-page>
-		<error-cod>500</error-cod>
+		<error-code>500</error-code>
 		<location>/WEB-INF/views/error/500.jsp</location>
 	</error-page>
+
 </web-app>

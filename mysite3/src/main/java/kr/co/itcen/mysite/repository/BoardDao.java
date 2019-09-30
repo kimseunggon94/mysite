@@ -78,6 +78,11 @@ public class BoardDao {
 		return count ==1;
 		
 	}
+
+	public void hit(Long no) {
+		sqlSession.update("board.hit", no);
+		
+	}
 		
 
 
