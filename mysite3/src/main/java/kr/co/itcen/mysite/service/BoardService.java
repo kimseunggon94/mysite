@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.itcen.mysite.repository.BoardDao;
 import kr.co.itcen.mysite.vo.BoardVo;
@@ -47,6 +48,10 @@ public class BoardService {
 	public void hit(Long no) {
 		boardDao.hit(no);
 		
+	}
+
+	public String restore(MultipartFile multipartFile) {
+		return boardDao.restore(multipartFile);
 	}
 
 }

@@ -41,6 +41,9 @@
 								<textarea id="content" name="contents"></textarea>
 							</td>
 						</tr>
+						<tr>
+							<td colspan=2><input type="file" name="file"></td>
+						</tr>
 					</table>
 					<div class="bottom">
 						<c:if test ='${param.no != null }'>

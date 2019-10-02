@@ -1,10 +1,21 @@
 package kr.co.itcen.mysite.vo;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class GuestbookVo {
 	private Long no;
+	
+	@NotEmpty
+	@Length(min=2, max=8)
 	private String name;
+	
+	@NotEmpty
 	private String password;
+	
+	@NotEmpty
 	private String contents;
+	
 	private String reg_date;
 	public String getReg_date() {
 		return reg_date;

@@ -1,10 +1,12 @@
 package kr.co.itcen.mysite.controller;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,57 +27,40 @@ public class UserController {
 	
 	
 	@RequestMapping(value="/join", method=RequestMethod.GET)
-	public String join() {
+	public String join(@ModelAttribute UserVo vo) {
 		return "user/join";
 	}
 	
 	@RequestMapping(value="/join", method=RequestMethod.POST)
-	public String join(@ModelAttribute UserVo vo) {
+	public String join(@ModelAttribute @Valid UserVo vo, BindingResult result, Model model) {
+		//model("userVo", vo);	@ModelAttribute가 하는 행동
+		
+		if(result.hasErrors()) {
+			model.addAllAttributes(result.getModel());			//Map으로 받는것도 가능
+			return "user/join";
+		}
 		userService.join(vo);
 		return "redirect:/user/joinsuccess";
 	}
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
-	public String login() {
+	public String login(@ModelAttribute UserVo vo) {
 		return "user/login";
 	}
 	
-	@RequestMapping(value="/login", method=RequestMethod.POST)
-	public String login(UserVo vo, HttpSession session) {
-		UserVo userVo = userService.getUser(vo);
-		if(userVo==null) {
-			session.setAttribute("result", "fail");
-			return "user/login";
-		}
-		session.setAttribute("authUser", userVo);
-		return "redirect:/";
-	}
-	
-	
-	@RequestMapping(value="/logout", method=RequestMethod.GET)
-	public String logout(HttpSession session) {
-		//접근제어(ACL)
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if(authUser!=null) {
-			session.removeAttribute("authUser");
-			session.invalidate();
-		}
-		return "redirect:/";
-	}
-	
 	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public String update(HttpSession session,Model model) {
+	public String update(HttpSession session,Model model, @ModelAttribute UserVo vo) {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		if(authUser==null) {
 			return "redirect:/";
 		}
-		UserVo vo = userService.get(authUser.getNo());
-		model.addAttribute("Info", vo);
+		vo = userService.get(authUser.getNo());
+		
 		return "user/update";
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(@ModelAttribute UserVo vo, HttpSession session) {
+	public String update(@ModelAttribute @Valid UserVo vo, BindingResult result, HttpSession session) {
 		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		
@@ -94,4 +79,18 @@ public class UserController {
 //		return "error/exception";
 //	}
 		
+//	@RequestMapping(value="/login", method=RequestMethod.POST)
+//	public String login(@ModelAttribute @Valid UserVo vo, BindingResult result, HttpSession session, Model model) {
+//		UserVo userVo = userService.getUser(vo);
+//		if(userVo==null) {
+//			session.setAttribute("logresult", "fail");
+//			return "user/login";
+//		}
+//		if(result.hasFieldErrors("email")) {
+//			model.addAllAttributes(result.getModel());		
+//			return "user/login";
+//		}
+//		session.setAttribute("authUser", userVo);
+//		return "redirect:/";
+//	}
 }

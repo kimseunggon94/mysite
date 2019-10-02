@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.co.itcen.mysite.service.BoardService;
 import kr.co.itcen.mysite.vo.BoardVo;
@@ -124,9 +125,15 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value ="/write", method=RequestMethod.POST)
-	public String write(@ModelAttribute BoardVo  vo1, @RequestParam(value="no", required=false) Long no, @RequestParam("page") int page, @RequestParam("kwd") String kwd, HttpSession session ) {
+	public String write(@ModelAttribute BoardVo  vo1, @RequestParam(value="no", required=false) Long no, 
+			@RequestParam("page") int page, @RequestParam("kwd") String kwd, HttpSession session,
+			@RequestParam(value = "file", required = false) MultipartFile multipartFile, Model model) {
+		
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		vo1.setUser_no(authUser.getNo());
+		String url = boardService.restore(multipartFile);
+		model.addAttribute("url", url);
+		
 		
 		if(no==null) {
 			boardService.insert(vo1);
