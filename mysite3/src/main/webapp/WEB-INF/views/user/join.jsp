@@ -13,13 +13,13 @@
 <script src="${pageContext.servletContext.contextPath }/assets/js/jquery/jquery-1.9.0.js" type="text/javascript"></script>
 <script >
 $(function(){
-	$("#input-email").change(function(){
+	$("#email").change(function(){
 		$("#btn-check-email").show();
 		$("#img-checked").hide();
 	});
 	
 	 $("#btn-check-email").click(function(){
-		var email = $("#input-email").val();
+		var email = $("#email").val();
 		if(email==""){
 			return ;
 		}
@@ -38,8 +38,8 @@ $(function(){
 				
 				if(response.data ==true){
 					alert("이미 존재하는 메일입니다.");
-					$("#input-email").val("");
-					$("#input-email").focus();
+					$("#email").val("");
+					$("#email").focus();
 					return;
 				}
 				
@@ -102,7 +102,7 @@ $(function(){
 					
 					<label class="block-label">성별</label>
 					<p>
-					<form:radiobuttons items="${userVo.genders }" path="gender"/>					
+					<form:radiobuttons items="${userVo.genders }" path="gender" />					
 					</p>
 
 					<fieldset>

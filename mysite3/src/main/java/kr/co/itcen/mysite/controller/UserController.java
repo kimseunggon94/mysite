@@ -49,26 +49,29 @@ public class UserController {
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public String update(HttpSession session,Model model, @ModelAttribute UserVo vo) {
+	public String update(HttpSession session,Model model, UserVo vo) {
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
 		if(authUser==null) {
 			return "redirect:/";
 		}
 		vo = userService.get(authUser.getNo());
-		
+		model.addAttribute("email", vo.getEmail());
+		model.addAttribute("userVo", vo);
 		return "user/update";
 	}
 	
 	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(@ModelAttribute @Valid UserVo vo, BindingResult result, HttpSession session) {
-		
+	public String update(@ModelAttribute @Valid UserVo vo, BindingResult result, HttpSession session, Model model) {
+		if(result.hasFieldErrors("name")) {
+			model.addAllAttributes(result.getModel());			//Map으로 받는것도 가능
+			return "user/update";
+		}
 		UserVo authUser = (UserVo)session.getAttribute("authUser");
+		
 		
 		vo.setNo(authUser.getNo());
 		userService.update(vo);
-		
 		authUser.setName(vo.getName());
-		
 		session.setAttribute("authUser", authUser);
 		
 		return "redirect:/";

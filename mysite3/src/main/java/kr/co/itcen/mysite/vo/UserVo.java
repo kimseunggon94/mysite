@@ -19,6 +19,10 @@ public class UserVo {
 	private String password;
 	private String gender;
 	private String joinDate;
+	
+	public UserVo() {
+		gender= "male";
+	}
 	public Long getNo() {
 		return no;
 	}
@@ -59,7 +63,6 @@ public class UserVo {
 		String[] s = {"male", "female"}; 
 		return s;
 	}
-	
 	@Override
 	public String toString() {
 		return "UserVo [no=" + no + ", name=" + name + ", email=" + email + ", password=" + password + ", gender="
