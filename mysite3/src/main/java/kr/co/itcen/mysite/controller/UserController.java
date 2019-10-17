@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import kr.co.itcen.mysite.security.Auth;
+import kr.co.itcen.mysite.security.AuthUser;
 import kr.co.itcen.mysite.service.UserService;
 import kr.co.itcen.mysite.vo.UserVo;
 
@@ -48,35 +50,35 @@ public class UserController {
 		return "user/login";
 	}
 	
-	@RequestMapping(value="/update", method=RequestMethod.GET)
-	public String update(HttpSession session,Model model, UserVo vo) {
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		if(authUser==null) {
-			return "redirect:/";
-		}
-		vo = userService.get(authUser.getNo());
-		model.addAttribute("email", vo.getEmail());
-		model.addAttribute("userVo", vo);
-		return "user/update";
-	}
-	
-	@RequestMapping(value="/update", method=RequestMethod.POST)
-	public String update(@ModelAttribute @Valid UserVo vo, BindingResult result, HttpSession session, Model model) {
-		if(result.hasFieldErrors("name")) {
-			model.addAllAttributes(result.getModel());			//Map으로 받는것도 가능
-			return "user/update";
-		}
-		UserVo authUser = (UserVo)session.getAttribute("authUser");
-		
-		
-		vo.setNo(authUser.getNo());
-		userService.update(vo);
-		authUser.setName(vo.getName());
-		session.setAttribute("authUser", authUser);
-		
-		return "redirect:/";
-	}
-	
+//	@RequestMapping(value="/update", method=RequestMethod.GET)
+//	public String update(HttpSession session,Model model, UserVo vo) {
+//		UserVo authUser = (UserVo)session.getAttribute("authUser");
+//		if(authUser==null) {
+//			return "redirect:/";
+//		}
+//		vo = userService.get(authUser.getNo());
+//		model.addAttribute("email", vo.getEmail());
+//		model.addAttribute("userVo", vo);
+//		return "user/update";
+//	}
+//	
+//	@RequestMapping(value="/update", method=RequestMethod.POST)
+//	public String update(@ModelAttribute @Valid UserVo vo, BindingResult result, HttpSession session, Model model) {
+//		if(result.hasFieldErrors("name")) {
+//			model.addAllAttributes(result.getModel());			//Map으로 받는것도 가능
+//			return "user/update";
+//		}
+//		UserVo authUser = (UserVo)session.getAttribute("authUser");
+//		
+//		
+//		vo.setNo(authUser.getNo());
+//		userService.update(vo);
+//		authUser.setName(vo.getName());
+//		session.setAttribute("authUser", authUser);
+//		
+//		return "redirect:/";
+//	}
+//	
 //	@ExceptionHandler(UserDaoException.class)
 //	public String handlerException() {
 //		return "error/exception";
@@ -96,4 +98,38 @@ public class UserController {
 //		session.setAttribute("authUser", userVo);
 //		return "redirect:/";
 //	}
+
+	@Auth("USER")	
+	@RequestMapping(value="/update", method=RequestMethod.GET)
+	public String update(@AuthUser UserVo authUser, Model model) {	
+		
+		
+		authUser = userService.get(authUser.getNo());
+		model.addAttribute("userVo",authUser);
+		
+		return "user/update";
+	}
+	@Auth("USER")	
+	@RequestMapping(value="/update", method=RequestMethod.POST)
+	public String update(
+		@Valid UserVo vo,
+		BindingResult result,
+		@AuthUser UserVo authUser,
+		Model model,
+		HttpSession session) {
+
+		System.out.println("authUser:"+vo);
+		if(result.hasErrors()) {
+			model.addAllAttributes(result.getModel());
+			model.addAttribute("userVo",vo);
+			return "user/update";
+		}
+		vo.setNo(authUser.getNo());
+		userService.update(vo);
+		
+//		session.removeAttribute("authUser");
+		session.setAttribute("authUser", vo);
+		
+		return "redirect:/";
+	}
 }
