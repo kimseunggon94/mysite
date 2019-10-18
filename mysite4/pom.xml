@@ -1,14 +1,16 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>kr.co.itcen</groupId>
-    <artifactId>mysite</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-  </parent>
-  <artifactId>mysite4</artifactId>
-  <packaging>war</packaging>
-  
-  
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>kr.co.itcen</groupId>
+		<artifactId>mysite</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>mysite4</artifactId>
+	<packaging>war</packaging>
+
+
 	<properties>
 		<org.springframework-version>4.3.24.RELEASE</org.springframework-version>
 		<jcloverslf4j.version>1.7.6</jcloverslf4j.version>
@@ -102,11 +104,11 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.9.8</version>
 		</dependency>
-	
+
 		<dependency>
-    		<groupId>com.fasterxml.jackson.module</groupId>
-    		<artifactId>jackson-module-parameter-names</artifactId>
-    		<version>2.9.10</version>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-parameter-names</artifactId>
+			<version>2.9.10</version>
 		</dependency>
 
 		<!-- common fileupload -->
